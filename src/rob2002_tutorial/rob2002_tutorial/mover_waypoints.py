@@ -27,7 +27,7 @@ A simple waypoint navigation demo where the robot visits a sequence of waypoints
 
 # The waypoint route, probably read in from a file for a real application
 # from either a map or drive and repeat. x, y and theta (in radians)
-waypoint_route = [
+waypoint_route_2 = [
     [0.0, -1.75, math.pi],
     [-4.0, -1.75, math.pi/2],
     [-4.0, 0.0, 0.0],
@@ -35,6 +35,16 @@ waypoint_route = [
     [-2.0, -1.75, 0.0],
     [0.0, -1.75, math.pi/2],
     [0.0, 0.0, 0.0],
+]
+
+waypoint_route = [
+    [0.0, 0.0, 0.0],
+    [0.0, -1.75, math.pi/2],
+    [-2.0, -1.75, 0.0],
+    [-2.0, 0.0, -math.pi/2],
+    [-4.0, 0.0, 0.0],
+    [-4.0, -1.75, math.pi/2],
+    [0.0, -1.75, math.pi],
 ]
 
 # the same route but expressed as x, y and angle as partial quarterion (z, w)
