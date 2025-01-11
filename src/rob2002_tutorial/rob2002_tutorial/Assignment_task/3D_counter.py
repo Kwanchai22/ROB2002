@@ -138,7 +138,7 @@ class Detector3D(Node):
                     )
                     global_pose = do_transform_pose(PoseStamped(pose=camera_pose), transform)
                     self.object_location_pub.publish(global_pose)
-                    self.get_logger().info(f"Object {num}: Global Position {global_pose.pose.position}")
+                    self.get_logger().info(f"Object {num}: Global Position {global_pose.pose.position.x}, {global_pose.pose.position.y}, {global_pose.pose.position.z}")
                 except LookupException:
                     self.get_logger().error(f"Transform not found: {self.camera_frame} to {self.global_frame}")
                 except ExtrapolationException:
@@ -163,3 +163,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
