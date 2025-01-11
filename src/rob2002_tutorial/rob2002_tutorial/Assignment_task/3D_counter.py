@@ -129,6 +129,12 @@ class Detector3D(Node):
                 image_coords = (cmoms["m01"] / cmoms["m00"], cmoms["m10"] / cmoms["m00"])
                 camera_pose = self.image2camera_tf(image_coords, image_color, image_depth)
 
+                # Create a PoseStamped object with header information
+                camera_pose_stamped = PoseStamped()
+                camera_pose_stamped.header.frame_id = self.camera_frame
+                camera_pose_stamped.header.stamp = self.get_clock().now().to_msg()
+                camera_pose_stamped.pose = camera_pose
+
                 try:
                     transform = self.tf_buffer.lookup_transform(
                         self.global_frame,
@@ -136,7 +142,7 @@ class Detector3D(Node):
                         rclpy.time.Time(),
                         timeout=rclpy.time.Duration(seconds=1.0)
                     )
-                    global_pose = do_transform_pose(PoseStamped(pose=camera_pose), transform)
+                    global_pose = do_transform_pose(camera_pose_stamped, transform)
                     self.object_location_pub.publish(global_pose)
                     self.get_logger().info(f"Object {num}: Global Position {global_pose.pose.position.x}, {global_pose.pose.position.y}, {global_pose.pose.position.z}")
                 except LookupException:
