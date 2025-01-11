@@ -17,7 +17,7 @@ from cv_bridge import CvBridge
 # ROS Messages
 from std_msgs.msg import Header
 from sensor_msgs.msg import Image, CameraInfo
-from geometry_msgs.msg import PoseStamped, Point, Quaternion
+from geometry_msgs.msg import PoseStamped, Point, Quaternion, Pose
 
 
 class Detector3D(Node):
@@ -87,6 +87,8 @@ class Detector3D(Node):
         camera_coords = np.array(self.ccamera_model.projectPixelTo3dRay((image_coords[1], image_coords[0])))
         camera_coords /= camera_coords[2]
         camera_coords *= depth_value
+
+        
 
         # Return Pose in camera coordinates
         return Pose(position=Point(x=camera_coords[0], y=camera_coords[1], z=camera_coords[2]),
