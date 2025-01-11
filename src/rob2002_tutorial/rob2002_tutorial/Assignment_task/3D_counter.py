@@ -88,8 +88,6 @@ class Detector3D(Node):
         camera_coords /= camera_coords[2]
         camera_coords *= depth_value
 
-        
-
         # Return Pose in camera coordinates
         return Pose(position=Point(x=camera_coords[0], y=camera_coords[1], z=camera_coords[2]),
                     orientation=Quaternion(x=0.0, y=0.0, z=0.0, w=1.0))
@@ -132,13 +130,19 @@ class Detector3D(Node):
                 camera_pose = self.image2camera_tf(image_coords, image_color, image_depth)
 
                 try:
-                    transform = self.tf_buffer.lookup_transform(self.global_frame, self.camera_frame,
-                                                                self.get_clock().now().to_msg())
+                    transform = self.tf_buffer.lookup_transform(
+                        self.global_frame,
+                        self.camera_frame,
+                        rclpy.time.Time(),
+                        timeout=rclpy.time.Duration(seconds=1.0)
+                    )
                     global_pose = do_transform_pose(PoseStamped(pose=camera_pose), transform)
                     self.object_location_pub.publish(global_pose)
-                    print(f"Object {num}: Global Position {global_pose.pose.position}")
-                except (LookupException, ExtrapolationException):
-                    self.get_logger().warn("Failed to transform pose to global frame")
+                    self.get_logger().info(f"Object {num}: Global Position {global_pose.pose.position}")
+                except LookupException:
+                    self.get_logger().error(f"Transform not found: {self.camera_frame} to {self.global_frame}")
+                except ExtrapolationException:
+                    self.get_logger().error("Extrapolation failed")
 
                 if self.visualisation:
                     cv2.circle(image_color, (int(image_coords[1]), int(image_coords[0])), 5, (255, 0, 0), -1)
