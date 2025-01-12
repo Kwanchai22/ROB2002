@@ -13,7 +13,11 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Int32
 # from .detector_dblcounting import DetectorBasic
-from  colour_detection import DetectorBasic
+
+# from  colour_detection import DetectorBasic
+from counter_3d import Counter3D
+from detector_3d import Detector3D
+
 class wander(Node):
     """
     A very simple Roamer implementation for LIMO.
@@ -54,25 +58,25 @@ class wander(Node):
         min_dist_right = min (right_range)
 
         min_dist = min(data.ranges[int(len(data.ranges)/2) - self.angular_range : int(len(data.ranges)/2) + self.angular_range])
-        # print(f'Min distance: {min_dist:.2f}')
-        self.get_logger().info(f'Front: {min_dist_front:.2f} , Left: {min_dist_left:.2f} , Right: {min_dist_right:.2f}')
+        # print(f'Min distance: {min_dist:.2f}')  # print the distance turning threshold
+        # self.get_logger().info(f'Front: {min_dist_front:.2f} , Left: {min_dist_left:.2f} , Right: {min_dist_right:.2f}')
         msg = Twist()
         if min_dist< 1.0:
             if(min_dist_left >= min_dist_right):
              msg.linear.x = 0.0
              msg.angular.z = -0.5
              time.sleep(1)
-             self.get_logger().info("Turning left")
+            #  self.get_logger().info("Turning left")
             elif (min_dist_left <= min_dist_right):
                 msg.linear.x = 0.0
                 msg.angular.z = 0.5
                 time.sleep(1)
-                self.get_logger().info("Turning right")
+                # self.get_logger().info("Turning right")
             else:
                  msg.linear.x = 0.0
         else:
-            self.get_logger().info("Moving forward")
-            msg.linear.x = 0.5
+            # self.get_logger().info("Moving forward")
+            msg.linear.x = 0.2
         # self.publisher.publish(msg , total_ranges)
         self.publisher.publish(msg )
 
@@ -81,21 +85,26 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Create instances of both nodes
-    detector_basic = DetectorBasic()
+    # detector_basic = DetectorBasic()
     mover = wander()
-
+    detector_3d = Detector3D()
+    counter_3d = Counter3D()
     # Use a MultiThreadedExecutor to spin both nodes
     executor = MultiThreadedExecutor()
-    executor.add_node(detector_basic)
-    executor.add_node(mover)
+    # executor.add_node(detector_basic)
+    executor.add_node(detector_3d)
+    executor.add_node(counter_3d)
+    # executor.add_node(mover)
 
     try:
         executor.spin()
     except KeyboardInterrupt:
         print("Shutting down...")
     finally:
-        detector_basic.destroy_node()
-        mover.destroy_node()
+        # detector_basic.destroy_node()
+        detector_3d.destroy_node()
+        counter_3d.destroy_node()
+        # mover.destroy_node()
         rclpy.shutdown()
 
 if __name__ == '__main__':
