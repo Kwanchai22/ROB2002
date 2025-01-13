@@ -18,6 +18,7 @@ from cv_bridge import CvBridge
 from std_msgs.msg import Header
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion
+import cv2 as cv
 
 class Detector3D(Node):
     # use the real robot?
@@ -119,10 +120,12 @@ class Detector3D(Node):
 
         # detect a color blob in the color image (here it is bright red)
         # provide the right values, or even better do it in HSV
-        image_mask = cv2.inRange(self.image_color, (0, 0, 80), (50, 50, 255))
-
+        red_thresh = cv.inRange(self.image_color, (0, 0, 80), (50, 50, 255))
+        green_thresh = cv.inRange(self.image_color, (0, 80, 0), (50, 255, 50))
+        blue_thresh = cv.inRange(self.image_color, (80, 0, 0), (255, 50, 50))
+        combined_thresh = cv.bitwise_or(cv.bitwise_or(red_thresh, green_thresh), blue_thresh)
         # finding all separate image regions in the binary image, using connected components algorithm
-        object_contours, _ = cv2.findContours( image_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        object_contours, _ = cv2.findContours(combined_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # iterate through all detected objects/contours
         # calculate their image coordinates
