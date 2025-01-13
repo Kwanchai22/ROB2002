@@ -1,3 +1,2 @@
 ros2 launch limo_gazebosim limo_gazebo_diff.launch.py world:=
-launch 
-ros2 launch limo_gazebosim limo_gazebo_diff.launch.py args:=
+ros2 launch limo_gazebosim limo_gazebo_diff.launch.py world:=/workspaces/ROB2002/src/rob2002_tutorial/worlds/Testworld1.txt
