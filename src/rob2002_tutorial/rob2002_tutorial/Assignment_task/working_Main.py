@@ -27,9 +27,9 @@ class wander(Node):
     """
     def __init__(self):
         """
-        On construction of the object, create a Subscriber
-        to listen to lasr scans and a Publisher to control
-        the robot
+        #On construction of the object, create a Subscriber
+        #to listen to lasr scans and a Publisher to control
+        #the robot
         """
         super().__init__('mover_laser')
         self.publisher = self.create_publisher(Twist, "/cmd_vel", 10)
@@ -40,7 +40,7 @@ class wander(Node):
     
     def laserscan_callback(self, data):
         """
-        Callback called any time a new laser scan become available
+        #Callback called any time a new laser scan become available
         """
         total_ranges = len(data.ranges) ; 
 
@@ -85,7 +85,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Create instances of the nodes
-    mover = wander()
+    #mover = wander()
     detector_3d = Detector3D()
     counter_3d = Counter3D()
 
@@ -93,7 +93,7 @@ def main(args=None):
     executor = MultiThreadedExecutor()
     executor.add_node(detector_3d)
     executor.add_node(counter_3d)
-    executor.add_node(mover)
+    #executor.add_node(mover)
 
     try:
         # Continuously spin the executor until counter_3d.run becomes True
@@ -108,7 +108,7 @@ def main(args=None):
         # Clean up resources
         detector_3d.destroy_node()
         counter_3d.destroy_node()
-        mover.destroy_node()
+        #mover.destroy_node()
         rclpy.shutdown()
         print("Program terminated.")
 if __name__ == '__main__':

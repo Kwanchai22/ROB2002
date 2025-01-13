@@ -49,13 +49,13 @@ waypoint_route = [
 
 # the same route but expressed as x, y and angle as partial quarterion (z, w)
 waypoint_route_quat = [
-    [0.0, -1.75, -1.0, 0.0],
-    [-4.0, -1.75, 0.7, 0.7],
-    [-4.0, 0.0, 0.0, 1.0],
-    [-2.0, 0.0, -0.7, 0.7],
-    [-2.0, -1.75, 0.0, 1.0],
-    [0.0, -1.75, 0.7, 0.7],
-    [0.0, 0.0, 0.0, 1.0],
+    [1.58, -2.69, 0.7, 0.8],
+    [-0.6, -2.82, -0.97, 0.21],
+    [-2.3, -1.78, 0.8, 0.58],
+    [-1.64, 0.95, 0.83, 0.55],
+    [1.31, 0.7, 0.24, 0.97],
+    [3.2, 2.52, 0.98, 0.21],
+    [0.0, 0.0, 0.0, 0.0],
 ]
 
 def pose_from_xyquat(timestamp, x=0.0, y=0.0, pz=0.0, pw=1.0):
@@ -93,12 +93,12 @@ def main():
 
     # Prepare a set of waypoints 
     waypoints = []
-    for wp in waypoint_route:
-        waypoints.append(pose_from_xytheta(navigator.get_clock().now().to_msg(), *wp))
+    #for wp in waypoint_route:
+    #    waypoints.append(pose_from_xytheta(navigator.get_clock().now().to_msg(), *wp))
 
     # # if you would rather specify the orientation as quaternion use the following line instead
-    # for wp in waypoint_route_quat:
-    #     waypoints.append(pose_from_xyquat(navigator.get_clock().now().to_msg(), *wp))
+    for wp in waypoint_route_quat:
+         waypoints.append(pose_from_xyquat(navigator.get_clock().now().to_msg(), *wp))
 
     # follow the specified waypoints
     navigator.followWaypoints(waypoints)
