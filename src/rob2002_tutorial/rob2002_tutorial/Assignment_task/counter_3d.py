@@ -11,7 +11,7 @@ class Counter3D(Node):
 
     def __init__(self):      
         super().__init__('counter_3d')
-        self.total_objects = 5
+        self.total_objects = 6
         self.detected_objects = [] # list of all detected objects
         self.run = False
         # subscribe to object detector

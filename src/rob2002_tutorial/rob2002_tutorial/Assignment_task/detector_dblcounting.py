@@ -8,7 +8,7 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import Polygon, PolygonStamped, Point32
 from cv_bridge import CvBridge
 
-from .rectangle import Rectangle
+from rectangle import Rectangle
 
 class DetectorBasic(Node):
     visualisation = True
@@ -83,8 +83,8 @@ class DetectorBasic(Node):
 
         # visualise the image processing results    
         if self.visualisation:
-            cv.imshow("colour image", bgr_image)
-            cv.imshow("detection mask", bgr_thresh)
+            #cv.imshow("colour image", bgr_image)
+            #cv.imshow("detection mask", bgr_thresh)
             cv.waitKey(1)
 
         self.seq += 1

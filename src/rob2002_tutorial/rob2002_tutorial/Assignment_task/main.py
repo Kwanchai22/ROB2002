@@ -15,6 +15,7 @@ from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Int32
 from counter_3d import Counter3D
 from detector_3d import Detector3D
+from detector_dblcounting import DetectorBasic
 
 def main(args=None):
     rclpy.init(args=args)
@@ -23,11 +24,13 @@ def main(args=None):
     #mover = wander()
     detector_3d = Detector3D()
     counter_3d = Counter3D()
+    detector_dblcounting = DetectorBasic()
 
     # Use a MultiThreadedExecutor to spin the nodes
     executor = MultiThreadedExecutor()
     executor.add_node(detector_3d)
     executor.add_node(counter_3d)
+    executor.add_node(detector_dblcounting)
     #executor.add_node(mover)
 
     try:
@@ -43,6 +46,7 @@ def main(args=None):
         # Clean up resources
         detector_3d.destroy_node()
         counter_3d.destroy_node()
+        detector_dblcounting.destroy_node()
         #mover.destroy_node()
         rclpy.shutdown()
         print("Program terminated.")
