@@ -64,8 +64,7 @@ def main(args=None):
         while rclpy.ok():
             rclpy.spin_once(counter_3d)
             if counter_3d.run:
-                print("Shutting down after detecting all objects.")
-                break
+                print("detected all objects.")
     except KeyboardInterrupt:
         print("Interrupted by user.")
     finally:

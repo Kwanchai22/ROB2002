@@ -21,34 +21,9 @@ from geometry_msgs.msg import PoseStamped
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 from tf_transformations import quaternion_from_euler
 
-"""
-A simple waypoint navigation demo where the robot visits a sequence of waypoints placed on the map.
-"""
-
-# The waypoint route, probably read in from a file for a real application
-# from either a map or drive and repeat. x, y and theta (in radians)
-waypoint_route_2 = [
-    [0.0, -1.75, math.pi],
-    [-4.0, -1.75, math.pi/2],
-    [-4.0, 0.0, 0.0],
-    [-2.0, 0.0, -math.pi/2],
-    [-2.0, -1.75, 0.0],
-    [0.0, -1.75, math.pi/2],
-    [0.0, 0.0, 0.0],
-]
-
-waypoint_route = [
-    [0.0, 0.0, 0.0],
-    [0.0, -1.75, math.pi/2],
-    [-2.0, -1.75, 0.0],
-    [-2.0, 0.0, -math.pi/2],
-    [-4.0, 0.0, 0.0],
-    [-4.0, -1.75, math.pi/2],
-    [0.0, -1.75, math.pi],
-]
 
 # the same route but expressed as x, y and angle as partial quarterion (z, w)
-waypoint_route_quat = [
+waypoint_route_quat2 = [
     [1.58, -2.69, 0.7, 0.8],
     [-0.6, -2.82, -0.97, 0.21],
     [-2.3, -1.78, 0.8, 0.58],
@@ -56,6 +31,24 @@ waypoint_route_quat = [
     [1.31, 0.7, 0.24, 0.97],
     [3.2, 2.52, 0.98, 0.21],
     [0.0, 0.0, 0.0, 0.0],
+]
+
+waypoint_route_quat = [
+    [-0.15, -2.76, -0.76, 0.65],
+    [2.62, -3.34, 0.68, 0.74],
+    [-1.67, -2.07, -1.0, 0.01],
+    [-1.99, -0.5, 0.59, 0.81],
+    [0.78, 0.27, 0.6, 0.8],
+    [0.98, 2.86, 0.98, 0.19],
+    [-1.87, 3.18, -0.99, 0.15],
+    [-1.73, 2.8, -0.62, 0.78],
+    [0.93, 0.69, -0.17, 0.99],
+    [3.42, 0.11, 0.62, 0.78],
+    [3.78, 3.03, 0.97, 0.23],
+    [2.88, 1.0, -0.97, 0.23],
+    [0.0, 0.0, 0.0, 0.0],
+
+    
 ]
 
 def pose_from_xyquat(timestamp, x=0.0, y=0.0, pz=0.0, pw=1.0):
@@ -93,10 +86,7 @@ def main():
 
     # Prepare a set of waypoints 
     waypoints = []
-    #for wp in waypoint_route:
-    #    waypoints.append(pose_from_xytheta(navigator.get_clock().now().to_msg(), *wp))
-
-    # # if you would rather specify the orientation as quaternion use the following line instead
+    # if you would rather specify the orientation as quaternion use the following line instead
     for wp in waypoint_route_quat:
          waypoints.append(pose_from_xyquat(navigator.get_clock().now().to_msg(), *wp))
 
