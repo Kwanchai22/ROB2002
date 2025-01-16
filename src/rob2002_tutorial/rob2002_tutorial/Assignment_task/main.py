@@ -34,7 +34,7 @@ def main(args=None):
     
 
     try:
-        # Continuously spin the executor until counter_3d.run becomes True
+        
         while rclpy.ok():
             executor.spin_once(timeout_sec=0.1)  # Allow other tasks to run
     except KeyboardInterrupt:
